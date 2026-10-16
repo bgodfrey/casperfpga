@@ -14,6 +14,17 @@ from .utils import create_meta_dictionary, get_hostname, get_kwarg, socket_close
 
 LOGGER = logging.getLogger(__name__)
 
+
+def message_str(msg):
+    """
+    Render a katcp Message as text. katcp's own str() decodes the message
+    as UTF-8 and raises UnicodeDecodeError on binary arguments, such as
+    register data in ?read replies and ?write requests.
+    :param msg: katcp.Message
+    :return: the message, with non-UTF-8 bytes shown as \\x escapes
+    """
+    return bytes(msg).decode('utf-8', errors='backslashreplace')
+
 # monkey-patch the maximum katcp message size
 if hasattr(katcp.CallbackClient, 'MAX_MSG_SIZE'):
     setattr(katcp.CallbackClient, 'MAX_MSG_SIZE',
@@ -292,17 +303,17 @@ class KatcpTransport(Transport, katcp.CallbackClient):
                 raise KatcpRequestFail(
                     'Request %s on host %s failed.\n\t'
                     'Request: %s\n\tReply: %s' %
-                    (request.name, self.host, request, reply))
+                    (request.name, self.host, message_str(request), message_str(reply)))
             elif reply.arguments[0] == katcp.Message.INVALID:
                 raise KatcpRequestInvalid(
                     'Invalid katcp request %s on host %s.\n\t'
                     'Request: %s\n\tReply: %s' %
-                    (request.name, self.host, request, reply))
+                    (request.name, self.host, message_str(request), message_str(reply)))
             else:
                 raise KatcpRequestError(
                     'Unknown error processing request %s on host '
                     '%s.\n\tRequest: %s\n\tReply: %s' %
-                    (request.name, self.host, request, reply))
+                    (request.name, self.host, message_str(request), message_str(reply)))
         return reply, informs
 
     def listdev(self, getsize=False, getaddress=False):
