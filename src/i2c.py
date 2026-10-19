@@ -383,16 +383,10 @@ class I2C:
     def _probe(self,addr):
         """ Test if a device with addr is present on the I2C bus by just reading it
         """
-        ret = None
         try:
-            ret = self.read(addr)
-        except IOError as error:
-            pass
-        finally:
-            if ret is not None:
-                return True
-            else:
-                return False
+            return self.read(addr) is not None
+        except Exception:
+            return False
 
     def probe(self):
         """ Return a list of devices detected on the i2c bus. """
@@ -673,16 +667,10 @@ class I2C_PIGPIO:
     def _probe(self,addr):
         """ Test if a device with addr is present on the I2C bus by just reading it
         """
-        ret = None
         try:
-            ret = self.read(addr)
-        except IOError as error:
-            pass
-        finally:
-            if ret is not None:
-                return True
-            else:
-                return False
+            return self.read(addr) is not None
+        except Exception:
+            return False
 
     def probe(self):
         import sys

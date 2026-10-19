@@ -174,7 +174,7 @@ def parse_fpg(filename, isbuf=False):
                             'should be tabs.' % filename)
                 line = line.replace(' ', '\t')
             # and carry on as usual.
-            line = line.replace('\_', ' ').replace('?meta', '')
+            line = line.replace('\\_', ' ').replace('?meta', '')
             line = line.replace('\n', '').lstrip().rstrip()
             #line_split = line.split('\t')
             # Rather split on any space
@@ -191,11 +191,11 @@ def parse_fpg(filename, isbuf=False):
             metalist.append((name, tag, param, value))
         elif line.startswith('?register'):
             if line.startswith('?register '):
-                register = line.replace('\_', ' ').replace('?register ', '')
+                register = line.replace('\\_', ' ').replace('?register ', '')
                 register = register.replace('\n', '').lstrip().rstrip()
                 name, address, size_bytes = register.split(' ')
             elif line.startswith('?register\t'):
-                register = line.replace('\_', ' ').replace('?register\t', '')
+                register = line.replace('\\_', ' ').replace('?register\t', '')
                 register = register.replace('\n', '').lstrip().rstrip()
                 name, address, size_bytes = register.split('\t')
             else:

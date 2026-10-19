@@ -110,8 +110,8 @@ class Qdr(Memory):
         self.which_qdr = self.block_info['which_qdr']
         self.ctrl_reg = register.Register(
             self.parent, self.which_qdr+'_ctrl', address=ctrlreg_address,
-            device_info={'tag': 'xps:sw_reg', 'mode': 'one\_value',
-                         'io_dir': 'From\_Processor', 'io_delay': '0',
+            device_info={'tag': 'xps:sw_reg', 'mode': 'one\\_value',
+                         'io_dir': 'From\\_Processor', 'io_delay': '0',
                          'sample_period': '1', 'names': 'reg',
                          'bitwidths': '32', 'arith_types': '0',
                          'bin_pts': '0', 'sim_port': 'on',

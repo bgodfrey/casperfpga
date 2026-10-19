@@ -197,7 +197,8 @@ class KatcpTransport(Transport, katcp.CallbackClient):
             if not connected:
                 result_queue.put('Could not connect to upload port.')
             try:
-                upload_socket.send(open(filename, 'rb').read())
+                with open(filename, 'rb') as fpg:
+                    upload_socket.send(fpg.read())
                 result_queue.put('')
             except Exception as e:
                 result_queue.put('Could not send file to upload port({}): {}'.format(
@@ -837,7 +838,7 @@ class KatcpTransport(Transport, katcp.CallbackClient):
                                  'arguments: %s' % str(inform.arguments))
                     continue
             for arg in inform.arguments:
-                arg = arg.replace(b'\_', b' ')
+                arg = arg.replace(b'\\_', b' ')
             name = inform.arguments[0].decode()
             tag = inform.arguments[1].decode()
             param = inform.arguments[2].decode()
